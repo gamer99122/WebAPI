@@ -41,7 +41,7 @@ namespace WebAPI.Controllers
 
         // GET api/<NewsController>/5
         [HttpGet("{id}")]
-        public NewsDto Get(Guid id)
+        public IActionResult Get(Guid id)
         {
             var result = (from a in _webContext.News
                           where a.NewsId == id
@@ -55,8 +55,12 @@ namespace WebAPI.Controllers
                               Click = a.Click
                           }).SingleOrDefault();
 
+            if (result == null)
+            {
+                return NotFound(); // 回傳 404
+            }
 
-            return result;
+            return Ok(result); // 回傳 200 和資料內容
         }
 
         //https://localhost:7215/api/News/GetKeyWord
