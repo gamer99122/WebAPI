@@ -41,9 +41,22 @@ namespace WebAPI.Controllers
 
         // GET api/<NewsController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public NewsDto Get(Guid id)
         {
-            return "value";
+            var result = (from a in _webContext.News
+                          where a.NewsId == id
+                          select new NewsDto
+                          {
+                              Title = a.Title,
+                              Content = a.Content,
+                              NewsId = a.NewsId,
+                              StartDateTime = a.StartDateTime,
+                              EndDateTime = a.EndDateTime,
+                              Click = a.Click
+                          }).SingleOrDefault();
+
+
+            return result;
         }
 
         // POST api/<NewsController>
