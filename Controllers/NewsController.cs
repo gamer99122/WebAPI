@@ -59,6 +59,41 @@ namespace WebAPI.Controllers
             return result;
         }
 
+        //https://localhost:7215/api/News/GetKeyWord
+        //https://localhost:7215/api/News/GetKeyWord?content=%E5%B0%8F%E8%B1%AC&%20startDateTime%20=%202025-05-06
+        [HttpGet("GetKeyWord")]
+        public IEnumerable<NewsDto> GetKeyWord(string title, string content, DateTime? startDateTime)
+        {
+            var result = from a in _webContext.News
+                         select new NewsDto
+                         {
+                             Title = a.Title,
+                             Content = a.Content,
+                             NewsId = a.NewsId,
+                             StartDateTime = a.StartDateTime,
+                             EndDateTime = a.EndDateTime,
+                             Click = a.Click
+                         };
+
+            if (!string.IsNullOrWhiteSpace(title))
+            {
+                result = result.Where(a => a.Title == title);
+            }
+
+            if (!string.IsNullOrWhiteSpace(content))
+            {
+                result = result.Where(a => a.Content.Contains(content));
+            }
+
+            if (startDateTime != null)
+            {
+                result = result.Where(a => a.StartDateTime.Date == ((DateTime)startDateTime).Date);
+            }
+
+            return result;
+        }
+
+
         // POST api/<NewsController>
         [HttpPost]
         public void Post([FromBody] string value)
