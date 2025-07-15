@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using WebAPI.Dtos;
 using WebAPI.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -21,9 +22,21 @@ namespace WebAPI.Controllers
 
         // GET: api/<NewsController>
         [HttpGet]
-        public IEnumerable<News> Get()
+        public IEnumerable<NewsDto> Get()
         {
-            return _webContext.News;
+            var result = from a in _webContext.News
+                         select new NewsDto
+                         {
+                             NewsId = a.NewsId,
+                             Title = a.Title,
+                             Content = a.Content,
+                             StartDateTime = a.StartDateTime,
+                             EndDateTime =a.EndDateTime,
+                             Click =a.Click
+                         };
+
+
+            return result;
         }
 
         // GET api/<NewsController>/5
