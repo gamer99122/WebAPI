@@ -17,6 +17,8 @@ public partial class WebContext : DbContext
 
     public virtual DbSet<NewsFiles> NewsFiles { get; set; }
 
+    public virtual DbSet<Todo> Todo { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Employee>(entity =>
